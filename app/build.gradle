@@ -1,0 +1,55 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+    signingConfigs {
+        def propsFile = file('keystore.properties')
+        def props = new Properties()
+        props.load(new FileInputStream(propsFile))
+
+        debug {
+            storeFile file(props['storeFile'])
+            storePassword props['storePassword']
+            keyAlias props['keyAlias']
+            keyPassword props['keyPassword']
+        }
+        release {
+            storeFile file(props['storeFile'])
+            storePassword props['storePassword']
+            keyAlias props['keyAlias']
+            keyPassword props['keyPassword']
+        }
+    }
+    defaultConfig {
+        applicationId "com.excel.appstvlauncher.casino"
+        minSdkVersion 17
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0.0"
+        project.ext.set("archivesBaseName", "0-AppsTvLauncher_Casino_v" + defaultConfig.versionName);
+        signingConfig signingConfigs.release
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+            debuggable true
+        }
+        release {
+            signingConfig signingConfigs.release
+            debuggable true
+        }
+    }
+    productFlavors {
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation project(':ExcelClassLibrary')
+    implementation 'com.android.support:localbroadcastmanager:28.0.0'
+}
